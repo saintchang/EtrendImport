@@ -167,7 +167,7 @@ namespace EtrendImport
                     case "居留期限":
                         if (p_row[p_mapp.new_name].Value == DBNull.Value)
                         {
-                            new_value = "{^1900-01-01}";
+                            new_value = "{^//}";
                         }
                         else
                         {
@@ -201,7 +201,7 @@ namespace EtrendImport
                             break;
                         case "D":
                         case "T":
-                            new_value = "{^1900-01-01}";
+                            new_value = "{^//}";
                             break;
                         case "I":
                         case "N":
