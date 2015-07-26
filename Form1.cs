@@ -99,21 +99,26 @@ namespace EtrendImport
                         //新增frgchk
                         if (mappingList[i] == "FrglbrMapping")
                         {
-                           
+
                             frgchkSB.Clear();
                             frgchkSB.AppendFormat(",{0}", itemRow[0].ToString());
                             foreach (mapping mpRow in mappingFrgchkSht)
                             {
                                 frgchkSB.AppendFormat(",{0}", getNewValue(mpRow, itemRow));
-                            }                                                        
+                            }
                             insertIntoFrgchk(
-                                frgchkSB.ToString().Substring(1).Split(new char[]{','}));
+                                frgchkSB.ToString().Substring(1).Split(new char[] { ',' }));
                         }
+                    }
+                    //catch (Exception ex)
+                    catch (OleDbException ex)
+                    {
+                        //System.Diagnostics.Debugger.Break();
+                        lstError.Items.Add(string.Format("{0}:{1}", itemRow[0].ToString(), ex.Message));
                     }
                     catch (Exception ex)
                     {
-                        //System.Diagnostics.Debugger.Break();
-                        lstError.Items.Add(string.Format("{0}:{1}", itemRow[0].ToString(),ex.Message));
+                        lstError.Items.Add(string.Format("{0}:{1}", itemRow[0].ToString(), ex.Message));
                     }
                     #endregion
                 }
@@ -125,7 +130,8 @@ namespace EtrendImport
 
         protected void insertIntoFrgchk(string[] p_values)
         {
-            string sql =mapping.GetFRGCHKSql(p_values);
+            //string sql =mapping.GetFRGCHKSql(p_values);
+            string sql = mapping.GetFRGCHKSql_2(p_values);
             dbfCMD.Parameters.Clear();
             dbfCMD.CommandType = CommandType.StoredProcedure;
             dbfCMD.CommandText = "ExecScript";
@@ -155,8 +161,16 @@ namespace EtrendImport
             string new_value = string.Empty;
             if (!p_mapp.new_name.Equals("DEFAULT"))
             {
+                //TODO 應該是要用e_name 而不是new_name 
+                //這樣每家客戶不同時，就都要修正 Orz
                 switch (p_mapp.new_name)
                 {
+                    case "外勞人數":
+                    case "引進方式":
+                        new_value = p_row[p_mapp.new_name].Value == DBNull.Value
+                            ? "0"
+                            : p_row[p_mapp.new_name].Value.ToString();
+                        break;
                     case "性別":
                         new_value = p_row[p_mapp.new_name] == "女" ? "'F'" : "'M'";
                         break;
@@ -165,6 +179,13 @@ namespace EtrendImport
                     case "護照期限":
                     case "聘可期限":
                     case "居留期限":
+                    case "護照效期":
+                    case "出生日期":
+                    case "入境日期":
+                    case "實際離境日":
+                    case "居留證效期":
+                    case " 招募函發函日期":
+                    case "聘雇許可函發函日期":
                         if (p_row[p_mapp.new_name].Value == DBNull.Value)
                         {
                             new_value = "{^//}";
@@ -191,27 +212,37 @@ namespace EtrendImport
                 }
                 else
                 {
-                    switch (p_mapp.field_type.ToUpper())
-                    {
-                        case "L":
-                            new_value = ".t.";
-                            break;
-                        case "C":
-                            new_value = "''";
-                            break;
-                        case "D":
-                        case "T":
-                            new_value = "{^//}";
-                            break;
-                        case "I":
-                        case "N":
-                        case "Y":
-                            new_value = "0";
-                            break;
-                    }                
+                    new_value = getDefaultValue(p_mapp.field_type);
                 }
             }
             return new_value;
+        }
+
+        protected string getDefaultValue(string p_type)
+        {
+            string defaultValue = string.Empty;
+            switch (p_type.ToUpper())
+            {
+                case "L":
+                    defaultValue = ".t.";
+                    break;
+                case "C":
+                    defaultValue = "''";
+                    break;
+                case "D":
+                case "T":
+                    defaultValue = "{^//}";
+                    break;
+                case "I":
+                case "N":
+                case "Y":
+                    defaultValue = "0";
+                    break;
+                default:
+                    defaultValue = string.Empty;;
+                    break;
+            }
+            return defaultValue;
         }
 
         protected void myOpenFileDialog(TextBox p_textBox, string p_filter)

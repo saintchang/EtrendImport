@@ -235,7 +235,7 @@
             this.txtMapping.Name = "txtMapping";
             this.txtMapping.Size = new System.Drawing.Size(606, 27);
             this.txtMapping.TabIndex = 26;
-            this.txtMapping.Text = "D:\\ForBox2\\To Saint\\20150629\\EtrendMapping.xls";
+            this.txtMapping.Text = "D:\\ForBox2\\To Saint\\20150725\\EtrendMapping.xls";
             // 
             // btnMapping
             // 
