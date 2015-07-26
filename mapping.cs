@@ -12,6 +12,39 @@ namespace EtrendImport
         public string field_type { get; set; }
         public string e_name { get; set; }
         public string new_name { get; set; }
+        
+        /// <summary>
+        /// for 01、06、07
+        /// </summary>
+        /// <param name="p_values"></param>
+        /// <returns></returns>
+        public static string GetFRGCHKSql_2(string[] p_values)
+        {
+            return string.Format(@"
+insert into frgchk values('{0}','01','招募核准函',{3},'發函日期', {4},'承接日', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','02','原招募核准函','','發函日期', {7},'有效期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','03','離境申請入境簽證函','','發函日期', {7},'有效期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','04','意外險保險號碼','','保險日期', {7},'有效期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','05','展延核准函','','發函日期', {7},'有效期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','06','居留證函號',{1},'發證日期',{7},'有效期限', {2}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','07','聘可函號',{5},'發函日期',{6},'工作期限', {33}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','08','6月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','09','12月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','10','居留證一展函號','','發證日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','11','18月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','12','展延聘可函號','','發函日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','13','24月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','14','居留證二展函號','','發證日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','15','30月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','16','再展延聘可函號','','發函日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','17','36月核備函號','','發函日期', {7},'體檢日期', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','18','居留證三展函號','','發證日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','19','離境核備函','','發證日期', {7},'工作期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','20','報逃函號','','發函日期', {7},'有效期限', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','22','異動核准函','','發函日期', {7},'', {7}, {7}, {7},'', {7},'')
+insert into frgchk values('{0}','23','入境通報','','', {7},'', {7}, {7}, {7},'', {7},'')",p_values);
+
+        }
 
         public static string GetFRGCHKSql(string[] p_values)
         {
